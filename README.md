@@ -10,21 +10,9 @@
 ## 使用
 
 ```bash
-docker run --rm <user>/musl-curl curl https://httpbin.org/ip
+docker run --rm tanxme/musl-curl curl https://httpbin.org/ip
 ```
 
-或在 Dockerfile 中：
-
-```dockerfile
-COPY --from=<user>/musl-curl /bin/curl /bin/curl
-COPY --from=<user>/musl-curl /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-```
-
-## 手动构建
-
-```bash
-docker build --build-arg CURL_VERSION=8.20.0 -t curl-musl .
-```
 
 ## 许可证
 
