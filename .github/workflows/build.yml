@@ -85,3 +85,11 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/musl-curl:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/musl-curl:${{ steps.latest.outputs.tag }}
+
+      - uses: peter-evans/dockerhub-description@v4
+        if: steps.check.outputs.build == 'true'
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ secrets.DOCKERHUB_USERNAME }}/musl-curl
+          readme-filepath: ./README.md
