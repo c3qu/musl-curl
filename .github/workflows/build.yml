@@ -83,5 +83,5 @@ jobs:
           build-args: CURL_VERSION=${{ steps.latest.outputs.tag }}
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/curl-musl:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/curl-musl:${{ steps.latest.outputs.tag }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/musl-curl:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/musl-curl:${{ steps.latest.outputs.tag }}
