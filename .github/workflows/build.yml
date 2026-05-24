@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '13 6 * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force build regardless of version'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -43,19 +48,22 @@ jobs:
           if [ "${{ steps.latest.outputs.tag }}" != "${{ steps.current.outputs.version }}" ]; then
             echo "New version: ${{ steps.latest.outputs.tag }}"
             echo "build=true" >> "$GITHUB_OUTPUT"
+          elif [ "${{ inputs.force || 'false' }}" = "true" ]; then
+            echo "Force build enabled"
+            echo "build=true" >> "$GITHUB_OUTPUT"
           else
             echo "Already at latest version"
             echo "build=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Update Dockerfile
-        if: steps.check.outputs.build == 'true'
+        if: steps.check.outputs.build == 'true' && steps.latest.outputs.tag != steps.current.outputs.version
         run: |
           sed -i "s/CURL_VERSION=[0-9.]\+/CURL_VERSION=${{ steps.latest.outputs.tag }}/" Dockerfile
           git diff
 
       - name: Commit version bump
-        if: steps.check.outputs.build == 'true'
+        if: steps.check.outputs.build == 'true' && steps.latest.outputs.tag != steps.current.outputs.version
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
