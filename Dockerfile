@@ -3,7 +3,7 @@ FROM alpine:latest AS tool-env
 RUN apk add --no-cache ca-certificates xz wget upx
 
 ARG TARGETARCH
-ARG CURL_VERSION=8.20.0
+ARG CURL_VERSION=8.21.0
 
 RUN set -x && \
     CURL_ARCH="" && \
